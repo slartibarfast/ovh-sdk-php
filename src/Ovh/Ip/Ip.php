@@ -204,5 +204,22 @@ class Ip
 		return json_decode(self::getClient()->setUnblockSpam($this->getIP(),$ipv4));
 	}
 	
+	/*
+	 * Move IP block
+	 *
+	 * return mixed
+	*/
+	public function moveIpBlock($ipv4,$dest) {
+		return json_decode(self::getClient()->moveIpBlock($this->getIP(),$ipv4, $dest));
+	}
+	
+	/*
+	 * park IP Block
+	 *
+	 * return mixed
+	*/
+	public function parkIpBlock($ipv4) {
+		return json_decode(self::getClient()->parkIpBlock($this->getIP(),$ipv4));
+	}
 	
 }

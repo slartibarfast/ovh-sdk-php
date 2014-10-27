@@ -847,7 +847,7 @@ class Server
 	*/
 // POST	/dedicated/server/{serviceName}/virtualMac
 	public function createVmac($ip,$type,$vmname) {
-		return json_decode(self::getClient()->assignVmac($this->getDomain(),$ip, $type, $vmname));
+		return json_decode(self::getClient()->createVmac($this->getDomain(),$ip, $type, $vmname));
 	}
 
 	/*
@@ -881,9 +881,9 @@ class Server
 	}
 	
 	/*
-	* add an IP addresses to vMAC 
+	* delete IP addresses from vMAC 
 	*
-	* @returns array of vMacs assigned 
+	* @returns task object
 	*/
 //	/dedicated/server/{serviceName}/virtualMac/{virtualmac}/virtualAddress
 	public function deleteVmacIPAddress($vmac, $ip) {

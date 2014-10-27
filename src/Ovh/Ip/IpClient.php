@@ -314,6 +314,61 @@ only seems to return null on success
         return $r->getBody(true);
     }
 
+    /**
+     * move IpBlock
+     *
+     * @param string $ipBlock
+	 * @param string $destination
+	 * 
+     * @return string Json
+     * @throws Exception\IpException
+     */ 
+	public function moveIpBlock($ipblock, $ipv4, $dest)
+    {
+		if (!$ipblock)
+			throw new BadMethodCallException('Parameter $ipblock is missing.');
+		if (!$ipv4)
+			throw new BadMethodCallException('Parameter $ipv4 is missing.');
+		if (!$dest)
+			throw new BadMethodCallException('Parameter $dest is missing.');
+		
+        $payload = array(
+			'to' => $dest
+		 );
+        try {
+            $r = $this->post('ip/' . urlencode($ipblock) . '/move', array('Content-Type' => 'application/json;charset=UTF-8'), json_encode($payload))->send();
+        } catch (\Exception $e) {
+            throw new IpException($e->getMessage(), $e->getCode(), $e);
+        }
+        return $r->getBody(true);
+    }
+
+    /**
+     * park IpBlock
+     *
+     * @param string $ipBlock
+	 * @param string $ipv4 
+	 *
+     * @return string Json
+     * @throws Exception\IpException
+	 *
+	 * untested!!
+     */ 
+	public function parkIpBlock($ipblock,$ipv4)
+    {
+		if (!$ipblock)
+			throw new BadMethodCallException('Parameter $ipblock is missing.');
+		if (!$ipv4)
+			throw new BadMethodCallException('Parameter $ipv4 is missing.');
+		
+        try {
+            $r = $this->post('ip/' . urlencode($ipblock) . '/park'  )->send();
+        } catch (\Exception $e) {
+            throw new IpException($e->getMessage(), $e->getCode(), $e);
+        }
+        return $r->getBody(true);
+    }
+
 
 /*
 		/ip/{ip}/firewall/*				not implemented
@@ -327,9 +382,6 @@ g		/ip/{ip}/license/windows		TODO
 g/p		/ip/{ip}/migrationToken			TODO
 g/p/d	/ip/{ip}/mitigation/*			TODO
 g/p		/ip/{ip}/mitigationProfiles		TODO
-post	/ip/{ip}/move					TODO
-post	/ip/{ip}/park					TODO
-g/p		/ip/{ip}/reverse/*				TODO
 g/p		/ip/{ip}/task/p					TODO
 p		/ip/{ip}/terminate				TODO
 

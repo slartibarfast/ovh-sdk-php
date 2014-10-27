@@ -24,6 +24,7 @@ namespace Ovh\Dedicated\Server\Exception;
 
 use Ovh\Common\Exception\InvalidResourceException;
 use Ovh\Common\Exception\InvalidSignatureException;
+use Ovh\Common\Exception\ServiceResponseException;
 
 //use Ovh\Vps\Exception\VpsSnapshotDoesNotExistsException;
 //use Ovh\Vps\Exception\VpsSnapshotIsOnlyForCloudException;
@@ -47,8 +48,11 @@ class ServerException extends \RuntimeException
 		$statusCode = $response->getStatusCode();
 		switch ($statusCode) {
 			case 403 :
-				// forbidden action - found on vmac activities
-				if (stristr((string)$response->getBody(), 'A Virtual Mac already exists on')) {
+				// forbidden actions - found on vmac activities
+				if (
+					 (stristr((string)$response->getBody(), 'A Virtual Mac already exists on')) || 
+					((stristr((string)$response->getBody(), 'The last virtual mac operation for ')) && (stristr((string)$response->getBody(), 'is too recent, please wait more than 2 minutes')) ) )
+					{
 					throw new ServiceResponseException($response, 403 , $prev);
 				} else throw $prev;
 			case 404 :

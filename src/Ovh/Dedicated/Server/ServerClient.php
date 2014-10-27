@@ -1721,11 +1721,12 @@ class ServerClient extends AbstractClient
         
 		$payload=array(
 			"ipAddress"=>$ipaddress,
+			'type'=>$type,
 			"virtualMachineName"=>$vmname
   		);
 		
         try {
-            $r = $this->get('dedicated/server/' . $domain . '/virtualMac/' . $ip , array('Content-Type' => 'application/json;charset=UTF-8'), json_encode($payload))->send();
+            $r = $this->post('dedicated/server/' . $domain . '/virtualMac/' , array('Content-Type' => 'application/json;charset=UTF-8'), json_encode($payload))->send();
         } catch (\Exception $e) {
             throw new ServerException($e->getMessage(), $e->getCode(), $e);
         }
